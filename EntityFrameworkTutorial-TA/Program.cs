@@ -41,7 +41,7 @@ namespace EntityFrameworkTutorial_TA
             //Console.WriteLine($"{st.Firstname} {st.Lastname}");
         }
         static void Run1() { 
-            #region Day #12 C# - Entity Framework
+            #region Day #13 C# - Entity Framework
 
             var _context = new eddbContext();
 
