@@ -1,8 +1,10 @@
 ﻿using EntityFrameworkTutorial_TA.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EntityFrameworkTutorial_TA
 {
@@ -10,7 +12,7 @@ namespace EntityFrameworkTutorial_TA
     {
         private readonly eddbContext _context;
 
-        public Student Create(Student student)
+        public async Task<Student> Create(Student student)
         {
             if (student == null)
             {
@@ -21,7 +23,8 @@ namespace EntityFrameworkTutorial_TA
                 throw new Exception("Student Id cannot equal zero");
             }
             _context.Students.Add(student);
-            var rowsaffected = _context.SaveChanges();
+            var rowsaffected = await _context.SaveChangesAsync(); 
+            // have to make SaveChanges() async b/c it hits the DB unlike the Add()
             if (rowsaffected != 1)
             {
                 throw new Exception("Create failed");
@@ -29,7 +32,7 @@ namespace EntityFrameworkTutorial_TA
             return student;
         }
 
-        public void Change(Student student)
+        public async void Task<Change>(Student student)
         {
             if (student == null)
             {
@@ -40,7 +43,7 @@ namespace EntityFrameworkTutorial_TA
                 throw new Exception("Student Id cannot equal zero");
             }
             //_context.Entry(student).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            var rowsaffected = _context.SaveChanges();
+            var rowsaffected = await _context.SaveChangesAsync();
             if (rowsaffected != 1)
             {
                 throw new Exception("Change failed");
@@ -48,9 +51,9 @@ namespace EntityFrameworkTutorial_TA
             return;
         }
 
-        public Student Remove(int id)
+        public async Task<Student> Remove(int id)
         {
-            var student = _context.Students.Find(id);
+            var student = await _context.Students.FindAsync(id);
             if (student == null)
             {
                 return null;
@@ -64,14 +67,14 @@ namespace EntityFrameworkTutorial_TA
             return student;
         }
 
-        public IEnumerable<Student> GetAll()
+        public async Task<IEnumerable<Student>> GetAll()
         {
-            return _context.Students.ToList();
+            return await _context.Students.ToListAsync();
         }
 
-        public Student GetByPk(int id)
+        public async Task<Student> GetByPk(int id)
         {
-            return _context.Students.Find(id);
+            return await _context.Students.FindAsync(id);
             //EF call 'find' only works with call primary key?
         }
 

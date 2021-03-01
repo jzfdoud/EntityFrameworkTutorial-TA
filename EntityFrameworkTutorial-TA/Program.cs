@@ -1,37 +1,38 @@
 ﻿using EntityFrameworkTutorial_TA.Models;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EntityFrameworkTutorial_TA
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
 
             var sctrl = new StudentsController();
 
 
-            var students = sctrl.GetAll();
+            var students = await sctrl.GetAll();
             foreach (var s in students)
             {
                 Console.WriteLine($"{s.Firstname} {s.Lastname}");
             }
 
-            //var sGreg = new Student
-            //{
-            //    Id = 0,
-            //    Firstname = "Greg",
-            //    Lastname = "Doud",
-            //    StateCode = "OH",
-            //    Sat = 800
-            //};
-            //var sGregNew = sctrl.Create(sGreg);
+            var sGreg = new Student
+            {
+                Id = 0,
+                Firstname = "Greg",
+                Lastname = "Doud",
+                StateCode = "OH",
+                Sat = 800
+            };
+            var sGregNew = await sctrl.Create(sGreg);
 
-            //var std = sctrl.GetByPk(76);
-            //std.Firstname = "Gregory";
-            //sctrl.Change(std);
-            //Console.WriteLine($"{std.Id} | {std.Firstname} {std.Lastname}");
+            var std = await sctrl.GetByPk(76);
+            std.Firstname = "Gregory";
+            await sctrl.Change(std);
+            Console.WriteLine($"{std.Id} | {std.Firstname} {std.Lastname}");
 
             //var studentDeleted = sctrl.Remove(std.Id);
             //Console.WriteLine($"{studentDeleted}");
@@ -79,9 +80,6 @@ namespace EntityFrameworkTutorial_TA
             allStudents.ForEach(s => Console.WriteLine($"{s.Name} | {s.Major}"));
             #endregion
 
-            #region
-
-            #endregion
 
             #endregion
         }
